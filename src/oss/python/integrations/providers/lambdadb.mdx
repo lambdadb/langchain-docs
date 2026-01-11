@@ -2,7 +2,7 @@
 title: LambdaDB
 ---
 
->[LambdaDB](https://lambdadb.ai/)  is a serverless-native search engine designed for building accurate, secure, and scalable AI applications. Store and search unstructured data at scale without managing any infrastructure.
+>[LambdaDB](https://lambdadb.ai/) is a serverless AI database for RAG and agents. Unify full-text, multi-vector, and hybrid search on a flexible document model. Handle infinite persistent memory and massive concurrency instantly— at 1/10th the cost.
 
 ## Installation and setup
 
@@ -43,7 +43,7 @@ import os
 
 # Initialize client
 client = LambdaDB(
-    project_url=os.environ["LAMBDADB_PROJECT_URL"],
+    server_url=os.environ["LAMBDADB_SERVER_URL"],
     project_api_key=os.environ["LAMBDADB_API_KEY"]
 )
 

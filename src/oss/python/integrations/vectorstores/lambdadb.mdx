@@ -2,7 +2,7 @@
 title: LambdaDB
 ---
 
->[LambdaDB]() is a serverless-native search engine designed for building accurate, secure, and scalable AI applications.
+>[LambdaDB](https://lambdadb.ai/) is a serverless AI database for building scalable RAG and agent applications.
 
 This notebook covers how to get started with the LambdaDB vector store in LangChain.
 
@@ -60,7 +60,7 @@ import os
 
 # Initialize the LambdaDB client
 client = LambdaDB(
-    project_url=os.environ["LAMBDADB_PROJECT_URL"],
+    server_url=os.environ["LAMBDADB_SERVER_URL"],
     project_api_key=os.environ["LAMBDADB_API_KEY"]
 )
 
