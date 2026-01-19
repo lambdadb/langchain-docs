@@ -102,7 +102,7 @@
     ],
     "socials": {
       "github": "https://github.com/langchain-ai",
-      "x": "https://x.com/LangChainAI",
+      "x": "https://x.com/LangChain",
       "linkedin": "https://www.linkedin.com/company/langchain/",
       "youtube": "https://www.youtube.com/@LangChain"
     }
@@ -164,7 +164,13 @@
                         "oss/python/langchain/messages",
                         "oss/python/langchain/tools",
                         "oss/python/langchain/short-term-memory",
-                        "oss/python/langchain/streaming",
+                        {
+                          "group": "Streaming",
+                          "pages": [
+                            "oss/python/langchain/streaming/overview",
+                            "oss/python/langchain/streaming/frontend"
+                          ]
+                        },
                         "oss/python/langchain/structured-output"
                       ]
                     },
@@ -503,7 +509,13 @@
                         "oss/javascript/langchain/messages",
                         "oss/javascript/langchain/tools",
                         "oss/javascript/langchain/short-term-memory",
-                        "oss/javascript/langchain/streaming",
+                        {
+                          "group": "Streaming",
+                          "pages": [
+                            "oss/javascript/langchain/streaming/overview",
+                            "oss/javascript/langchain/streaming/frontend"
+                          ]
+                        },
                         "oss/javascript/langchain/structured-output"
                       ]
                     },
@@ -948,6 +960,7 @@
                         "langsmith/trace-with-semantic-kernel",
                         "langsmith/trace-with-vercel-ai-sdk",
                         "langsmith/trace-with-livekit",
+                        "langsmith/trace-with-mastra",
                         "langsmith/trace-with-pipecat"
                       ]
                     },
@@ -1026,7 +1039,15 @@
                   "group": "Feedback & evaluation",
                   "pages": [
                     "langsmith/attach-user-feedback",
-                    "langsmith/online-evaluations"
+                    {
+                      "group": "Set up online evaluators",
+                      "pages": [
+                        "langsmith/online-evaluations-llm-as-judge",
+                        "langsmith/online-evaluations-multi-turn",
+                        "langsmith/online-evaluations-code",
+                        "langsmith/online-evaluations-composite"
+                      ]
+                    }
                   ]
                 },
                 {
@@ -1077,27 +1098,40 @@
                       "pages": [
                         "langsmith/evaluate-llm-application",
                         "langsmith/run-evaluation-from-prompt-playground",
-                        "langsmith/prebuilt-evaluators"
+                        "langsmith/run-evals-api-only"
                       ]
                     },
                     {
                       "group": "Evaluation types",
                       "pages": [
                         "langsmith/evaluation-types",
-                        "langsmith/code-evaluator",
-                        "langsmith/llm-as-judge",
-                        "langsmith/composite-evaluators",
-                        "langsmith/summary",
-                        "langsmith/evaluate-pairwise"
+                        {
+                          "group": "UI",
+                          "pages": [
+                            "langsmith/llm-as-judge",
+                            "langsmith/code-evaluator-ui",
+                            "langsmith/composite-evaluators-ui"
+                          ]
+                        },
+                        {
+                          "group": "SDK",
+                          "pages": [
+                            "langsmith/llm-as-judge-sdk",
+                            "langsmith/code-evaluator-sdk",
+                            "langsmith/composite-evaluators-sdk",
+                            "langsmith/summary",
+                            "langsmith/evaluate-pairwise"
+                          ]
+                        }
                       ]
                     },
                     {
                       "group": "Frameworks & integrations",
                       "pages": [
-                        "langsmith/evaluation-async",
+                        "langsmith/prebuilt-evaluators",
                         "langsmith/pytest",
-                        "langsmith/vitest-jest",
-                        "langsmith/run-evals-api-only"
+                        "langsmith/vitest-jest"
+
                       ]
                     },
                     {
@@ -1109,6 +1143,7 @@
                         "langsmith/multiple-scores",
                         "langsmith/metric-type",
                         "langsmith/bind-evaluator-to-dataset",
+                        "langsmith/evaluation-async",
                         "langsmith/repetition",
                         "langsmith/rate-limiting",
                         "langsmith/local",
@@ -1212,6 +1247,7 @@
                 "langsmith/local-server",
                 "langsmith/app-development",
                 "langsmith/deployment-quickstart",
+                "langsmith/local-dev-testing",
                 {
                   "group": "Configure app for deployment",
                   "pages": [
@@ -1222,6 +1258,7 @@
                         "langsmith/setup-app-requirements-txt",
                         "langsmith/setup-pyproject",
                         "langsmith/setup-javascript",
+                        "langsmith/setup-java",
                         "langsmith/monorepo-support"
                         ]
                       },
@@ -1302,7 +1339,6 @@
                       "group": "Tutorials",
                       "pages": [
                         "langsmith/deploy-other-frameworks",
-                        "langsmith/use-stream-react",
                         "langsmith/generative-ui-react"
                       ]
                     }
@@ -1339,43 +1375,6 @@
                       "langsmith/encryption",
                       "langsmith/configurable-headers",
                       "langsmith/configurable-logs"
-                  ]
-                }
-              ]
-            },
-            {
-              "tab": "Agent Builder",
-              "pages": [
-                "langsmith/agent-builder",
-                {
-                  "group": "Get started",
-                  "pages": [
-                    "langsmith/agent-builder-essentials",
-                    {
-                      "group": "Templates",
-                      "pages": [
-                        "langsmith/agent-builder-templates",
-                        "langsmith/agent-builder-quickstart"
-                      ]
-                    },
-                    "langsmith/agent-builder-setup",
-                    "langsmith/agent-builder-workspace-vs-private"
-                  ]
-                },
-                {
-                  "group": "Tools and integrations",
-                  "pages": [
-                    "langsmith/agent-builder-tools",
-                    "langsmith/agent-builder-third-party-mcp-servers",
-                    "langsmith/agent-builder-slack-app"
-                  ]
-                },
-                {
-                  "group": "Advanced",
-                  "pages": [
-                    "langsmith/agent-builder-auth-format",
-                    "langsmith/agent-builder-code",
-                    "langsmith/agent-builder-mcp-framework"
                   ]
                 }
               ]
@@ -1433,6 +1432,13 @@
                             "langsmith/self-host-mirroring-images"
                           ]
                         }
+                      ]
+                    },
+                    {
+                      "group": "Enable features",
+                      "pages": [
+                        "langsmith/agent-builder-self-hosted",
+                        "langsmith/insights-self-hosted"
                       ]
                     },
                     {
@@ -1535,9 +1541,49 @@
               ]
             }
           ]
+        },
+        {
+          "product": "Agent Builder",
+          "icon": "wand-magic-sparkles",
+          "description": "Create helpful AI agents without code",
+          "pages": [
+            "langsmith/agent-builder",
+            {
+              "group": "Get started",
+              "pages": [
+                "langsmith/agent-builder-quickstart",
+                "langsmith/agent-builder-essentials",
+                "langsmith/agent-builder-templates",
+                "langsmith/agent-builder-setup",
+                "langsmith/agent-builder-visibility"
+              ]
+            },
+            {
+              "group": "Tools and integrations",
+              "pages": [
+                "langsmith/agent-builder-tools",
+                "langsmith/agent-builder-remote-mcp-servers",
+                "langsmith/agent-builder-slack-app"
+              ]
+            },
+            {
+              "group": "Advanced",
+              "pages": [
+                "langsmith/agent-builder-auth-format",
+                "langsmith/agent-builder-code",
+                "langsmith/agent-builder-mcp-framework"
+              ]
+            },
+            {
+              "group": "Additional resources",
+              "pages": [
+                "langsmith/agent-builder-pricing-faq"
+              ]
+            }
+          ]
         }
       ]
-  },
+    },
   "interaction": {
     "drilldown": true
   },
@@ -1549,6 +1595,14 @@
     }
   },
   "redirects": [
+    {
+      "source": "langsmith/agent-builder-workspace-vs-private",
+      "destination": "/langsmith/agent-builder-visibility"
+    },
+    {
+      "source": "/labs/swe/:path*",
+      "destination": "https://github.com/langchain-ai/open-swe/tree/main/apps/docs"
+    },
     {
       "source": "/langchain",
       "destination": "/oss/python/langchain/overview"
@@ -1854,6 +1908,18 @@
       "destination": "/oss/javascript/langchain/middleware/overview"
     },
     {
+      "source": "/oss/python/langchain/streaming",
+      "destination": "/oss/python/langchain/streaming/overview"
+    },
+    {
+      "source": "/oss/javascript/langchain/streaming",
+      "destination": "/oss/javascript/langchain/streaming/overview"
+    },
+    {
+      "source": "/langsmith/use-stream-react",
+      "destination": "/oss/langchain/streaming/frontend"
+    },
+    {
       "source": "/oss/python/integrations/tools/toolbox",
       "destination": "/oss/python/integrations/tools/mcp_toolbox"
     },
@@ -1928,6 +1994,14 @@
     {
       "source": "/oss/python/integrations/llms/google_ai",
       "destination": "/oss/python/integrations/llms/google_generative_ai"
+    },
+    {
+      "source": "/langsmith/composite-evaluators",
+      "destination": "/langsmith/composite-evaluators-ui"
+    },
+    {
+      "source": "/langsmith/online-evaluations",
+      "destination": "/langsmith/online-evaluations-llm-as-judge"
     },
     {
       "source": "/oss/python/langchain/supervisor",
