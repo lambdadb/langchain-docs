@@ -25,7 +25,7 @@ if "LAMBDADB_API_KEY" not in os.environ:
     os.environ["LAMBDADB_API_KEY"] = getpass.getpass("Enter your LambdaDB API key: ")
 ```
 
-To enable automated tracing of your model calls, set your [LangSmith](https://docs.langchain.com/langsmith/home) API key:
+To enable automated tracing of your model calls, set your [LangSmith](/langsmith/home) API key:
 
 ```python
 os.environ["LANGSMITH_API_KEY"] = getpass.getpass("Enter your LangSmith API key: ")
@@ -371,14 +371,12 @@ For detailed documentation of all `LambdaDBVectorStore` features and configurati
 ## Additional resources
 
 - [LambdaDB Documentation](https://docs.lambdadb.ai)
-- [LangChain Vector Stores Overview](/docs/concepts/vectorstores)
-- [Retrieval-Augmented Generation (RAG)](/docs/tutorials/rag)
 
 ---
 
-<Callout icon="pen-to-square" iconType="regular">
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/vectorstores/lambdadb.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 </Callout>
-<Tip icon="terminal" iconType="regular">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-</Tip>
+</Callout>

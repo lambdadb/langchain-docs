@@ -7,9 +7,9 @@ sidebarTitle: Time travel
 
 When working with non-deterministic systems that make model-based decisions (e.g., agents powered by LLMs), it can be useful to examine their decision-making process in detail:
 
-1. <Icon icon="lightbulb" size={16} /> **Understand reasoning**: Analyze the steps that led to a successful result.
+1. <Icon icon="bulb" size={16} /> **Understand reasoning**: Analyze the steps that led to a successful result.
 2. <Icon icon="bug" size={16} /> **Debug mistakes**: Identify where and why errors occurred.
-3. <Icon icon="magnifying-glass" size={16} /> **Explore alternatives**: Test different paths to uncover better solutions.
+3. <Icon icon="search" size={16} /> **Explore alternatives**: Test different paths to uncover better solutions.
 
 LangGraph provides time-travel functionality to support these use cases. Specifically, you can resume execution from a prior checkpoint — either replaying the same state or modifying it to explore alternatives. In all cases, resuming past execution produces a new fork in the history.
 
@@ -244,9 +244,9 @@ await graph.invoke(null, newConfig);
 
 ---
 
-<Callout icon="pen-to-square" iconType="regular">
+<Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/use-time-travel.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 </Callout>
-<Tip icon="terminal" iconType="regular">
+<Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-</Tip>
+</Callout>
