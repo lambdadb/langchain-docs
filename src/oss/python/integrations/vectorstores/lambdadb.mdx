@@ -205,7 +205,7 @@ Supported search types:
 
 ## Async operations
 
-`LambdaDBVectorStore` supports async methods for all operations:
+`LambdaDBVectorStore` fully supports async operations for all methods:
 
 ```python
 # Add documents
@@ -224,10 +224,6 @@ results = await vector_store.asimilarity_search_with_score(query="database", k=2
 for doc, score in results:
     print(f"* [SIM={score:.3f}] {doc.page_content}")
 ```
-
-<Note>
-Currently, async methods run synchronously as the LambdaDB client doesn't support async operations yet.
-</Note>
 
 ---
 
