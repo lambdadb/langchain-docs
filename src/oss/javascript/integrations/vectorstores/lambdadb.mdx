@@ -7,7 +7,7 @@ description: "Integrate with the LambdaDBVectorStore vector store using LangChai
 
 ## Setup
 
-To access the LambdaDB vector store, you'll need to create a LambdaDB account, get your project credentials, and install the `langchain-lambdadb` integration package.
+To access the LambdaDB vector store, you'll need to create a [LambdaDB account](https://lambdadb.ai/), get your project credentials, and install the `langchain-lambdadb` integration package.
 
 ### Credentials
 
@@ -19,8 +19,8 @@ import { Document } from '@langchain/core/documents';
 
 // Configure LambdaDB connection
 const config = {
-  projectApiKey: process.env.LAMBDADB_API_KEY!,
-  serverURL: process.env.LAMBDADB_SERVER_URL, // Optional: custom server
+  baseUrl: process.env.LAMBDADB_BASE_URL!,
+  projectName: process.env.LAMBDADB_PROJECT_NAME!,
   collectionName: 'my-documents',
   vectorDimensions: 1536, // OpenAI embedding dimensions
   similarityMetric: 'cosine',
@@ -44,7 +44,7 @@ npm install @langchain/openai
 ## Instantiation
 
 <Note>
-    `LambdaDBVectorStore` works with existing collections. You must create the collection beforehand with proper vector and text indexes configured.
+    If the specified collection does not exist, `LambdaDBVectorStore` will create it automatically.
 </Note>
 
 
@@ -58,8 +58,8 @@ const embeddings = new OpenAIEmbeddings({
 });
 
 const vectorStore = new LambdaDBVectorStore(embeddings, {
-  projectApiKey: process.env.LAMBDADB_API_KEY!,
-  serverURL: process.env.LAMBDADB_SERVER_URL, // Optional: custom server
+  baseUrl: process.env.LAMBDADB_BASE_URL!,
+  projectName: process.env.LAMBDADB_PROJECT_NAME!,
   collectionName: 'my_collection',  // Must exist beforehand
   vectorDimensions: 1536, // OpenAI embedding dimensions
   similarityMetric: 'cosine',
@@ -84,7 +84,8 @@ const vectorStore = await LambdaDBVectorStore.fromTexts(
   [{ source: "docs" }, { source: "docs" }, { category: "features" }],
   embeddings,
   {
-    projectApiKey: process.env.LAMBDADB_API_KEY!,
+    baseUrl: process.env.LAMBDADB_BASE_URL!,
+    projectName: process.env.LAMBDADB_PROJECT_NAME!,
     collectionName: "my-documents",
     vectorDimensions: 1536,
   }
@@ -125,10 +126,6 @@ const documents = [
 const ids = await vectorStore.addDocuments(documents, { ids: ["1", "2", "3"] });
 console.log(`Added documents with IDs: ${ids}`);
 ```
-
-<Note>
-    Documents have a maximum size of 50KB. The integration automatically batches documents into groups of up to 100 to stay within LambdaDB's 6MB request limit.
-</Note>
 
 ### Delete items
 
@@ -215,7 +212,7 @@ Supported search types: `"similarity"` (default), `"mmr"`, `"similarity_score_th
 
 ## Async operations
 
-`LambdaDBVectorStore` fully supports async operations. All methods return Promises and can be used with `async/await`:
+`LambdaDBVectorStore` supports async operations. All methods return Promises and can be used with `async/await`:
 
 ```typescript
 // Add documents
@@ -246,7 +243,8 @@ const results = await vectorStore.similaritySearch("LambdaDB", 2, undefined, {
 
 // Or set as the default at initialization
 const vectorStore = new LambdaDBVectorStore(embeddings, {
-  projectApiKey: process.env.LAMBDADB_API_KEY!,
+  baseUrl: process.env.LAMBDADB_BASE_URL!,
+  projectName: process.env.LAMBDADB_PROJECT_NAME!,
   collectionName: "my-documents",
   vectorDimensions: 1536,
   defaultConsistentRead: false,
@@ -265,7 +263,8 @@ import { RunnablePassthrough, RunnableSequence } from "@langchain/core/runnables
 const embeddings = new OpenAIEmbeddings();
 
 const vectorStore = new LambdaDBVectorStore(embeddings, {
-  projectApiKey: process.env.LAMBDADB_API_KEY!,
+  baseUrl: process.env.LAMBDADB_BASE_URL!,
+  projectName: process.env.LAMBDADB_PROJECT_NAME!,
   collectionName: "my-documents",
   vectorDimensions: 1536,
 });
@@ -290,7 +289,7 @@ console.log(response);
 
 ## API reference
 
-For detailed documentation of all `LambdaDBVectorStore` features and configurations, head to the [API reference](https://docs.lambdadb.ai/guides/get-started/quickstart).
+For detailed documentation of all `LambdaDBVectorStore` features and configurations, head to the [API reference](https://docs.lambdadb.ai/reference/api/introduction).
 
 ## Additional resources
 
