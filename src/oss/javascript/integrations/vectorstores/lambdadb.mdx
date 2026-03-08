@@ -1,9 +1,9 @@
 ---
 title: "LambdaDB integration"
-description: "Integrate with the LambdaDBVectorStore vector store using LangChain JavaScript."
+description: "Integrate with the LambdaDB vector store using LangChain JavaScript."
 ---
 
-[LambdaDB](https://lambdadb.ai/) is a serverless AI database for building scalable RAG and agent applications.
+[LambdaDB](https://lambdadb.ai/) is a serverless AI database built for RAG and agent workloads at scale. Run hybrid search (vector + full-text with RRF), multi-field vector search, and full-text search over a flexible document model without managing infrastructure. Supports collection branching, point-in-time recovery, and is available in every region worldwide with no minimum fees.
 
 ## Setup
 
@@ -11,14 +11,15 @@ To access the LambdaDB vector store, you'll need to create a [LambdaDB account](
 
 ### Credentials
 
-LambdaDB uses project-based authentication with a project URL and API key:
+LambdaDB uses project-based authentication with a project API key:
 
 ```typescript
-import { LambdaDBVectorStore } from 'langchain-lambdadb';
+import { LambdaDBVectorStore } from '@functional-systems/langchain-lambdadb';
 import { Document } from '@langchain/core/documents';
 
 // Configure LambdaDB connection
 const config = {
+  projectApiKey: process.env.LAMBDADB_PROJECT_API_KEY!,
   baseUrl: process.env.LAMBDADB_BASE_URL!,
   projectName: process.env.LAMBDADB_PROJECT_NAME!,
   collectionName: 'my-documents',
@@ -29,11 +30,11 @@ const config = {
 
 ### Installation
 
-The LangChain LambdaDB integration lives in the `langchain-lambdadb` package:
+The LangChain LambdaDB integration lives in the `@functional-systems/langchain-lambdadb` package (the LambdaDB client is in `@functional-systems/lambdadb`):
 
 
 ```bash
-npm install langchain-lambdadb @langchain/core
+npm install @functional-systems/lambdadb @functional-systems/langchain-lambdadb @langchain/core
 ```
 
 You'll also need to install an embedding model. For example, to use OpenAI embeddings:
@@ -44,12 +45,13 @@ npm install @langchain/openai
 ## Instantiation
 
 <Note>
-    If the specified collection does not exist, `LambdaDBVectorStore` will create it automatically.
+    `LambdaDBVectorStore` works with existing collections. You must create the collection beforehand with proper vector and text indexes configured.
 </Note>
 
 
 ```typescript
-import { LambdaDBVectorStore } from 'langchain-lambdadb';
+import { LambdaDBClient } from '@functional-systems/lambdadb';
+import { LambdaDBVectorStore } from '@functional-systems/langchain-lambdadb';
 import { OpenAIEmbeddings } from '@langchain/openai';
 
 // Initialize embeddings
@@ -57,19 +59,13 @@ const embeddings = new OpenAIEmbeddings({
   apiKey: process.env.OPENAI_API_KEY
 });
 
-const vectorStore = new LambdaDBVectorStore(embeddings, {
+const client = new LambdaDBClient({
+  projectApiKey: process.env.LAMBDADB_PROJECT_API_KEY!,
   baseUrl: process.env.LAMBDADB_BASE_URL!,
   projectName: process.env.LAMBDADB_PROJECT_NAME!,
-  collectionName: 'my_collection',  // Must exist beforehand
-  vectorDimensions: 1536, // OpenAI embedding dimensions
-  similarityMetric: 'cosine',
-  // Optional: Configure retry behavior
-  retryOptions: {
-    maxAttempts: 3,
-    initialDelay: 500,
-    maxDelay: 5000
-  }
 });
+
+const vectorStore = new LambdaDBVectorStore(embeddings, { collection: client.collection('my-collection') });
 ```
 
 Alternatively, use `fromTexts` to create the store and add documents in a single call:
@@ -83,12 +79,7 @@ const vectorStore = await LambdaDBVectorStore.fromTexts(
   ],
   [{ source: "docs" }, { source: "docs" }, { category: "features" }],
   embeddings,
-  {
-    baseUrl: process.env.LAMBDADB_BASE_URL!,
-    projectName: process.env.LAMBDADB_PROJECT_NAME!,
-    collectionName: "my-documents",
-    vectorDimensions: 1536,
-  }
+  { collection: client.collection('my-collection') }
 );
 ```
 
@@ -96,19 +87,10 @@ const vectorStore = await LambdaDBVectorStore.fromTexts(
 
 | Option | Type | Required | Description |
 |--------|------|----------|-------------|
-| `projectApiKey` | `string` | ✅ | Your LambdaDB project API key |
-| `collectionName` | `string` | ✅ | Name of the collection to use |
-| `vectorDimensions` | `number` | ✅ | Vector dimensions for embeddings |
-| `similarityMetric` | `SimilarityMetric` | ❌ | Similarity metric (default: 'cosine') |
-| `baseUrl` | `string` | ❌ | API base URL (e.g. https://api.lambdadb.ai). Preferred with `projectName`. |
-| `projectName` | `string` | ❌ | Project name (path under /projects/). Preferred with `baseUrl`. |
-| `serverURL` | `string` | ❌ | **Deprecated.** Full server URL override. Prefer `baseUrl` + `projectName`. |
-| `textField` | `string` | ❌ | Field name for document content (default: 'content') |
+| `collection` | `string` | ✅ | LambdaDB collection handle to use |
+| `textField` | `string` | ❌ | Field name for document content (default: 'page_content') |
 | `vectorField` | `string` | ❌ | Field name for vectors (default: 'vector') |
-| `validateCollection` | `boolean` | ❌ | Validate collection before operations (default: false) |
-| `defaultConsistentRead` | `boolean` | ❌ | Use consistent reads by default (default: true) |
-| `retryOptions` | `RetryOptions` | ❌ | Configure retry behavior with exponential backoff |
-| `partitionConfig` | `PartitionConfigOption` | ❌ | Optional partition config for collection creation |
+| `defaultConsistentRead` | `boolean` | ❌ | Use consistent reads by default (default: false) |
 
 ## Manage vector store
 
@@ -232,29 +214,28 @@ const scored = await vectorStore.similaritySearchWithScore("database", 2);
 
 LambdaDB supports two consistency modes:
 
-- **Consistent reads** (default): Immediate consistency after writes
-- **Eventual consistency**: Faster performance; data may be briefly stale after writes
+- **Eventual consistency** (default): Faster performance; data may be briefly stale after writes
+- **Consistent reads**: Immediate consistency after writes
+
 
 ```typescript
 // Set per-request
 const results = await vectorStore.similaritySearch("LambdaDB", 2, undefined, {
-  consistentRead: false,
+  consistentRead: true,
 });
 
 // Or set as the default at initialization
 const vectorStore = new LambdaDBVectorStore(embeddings, {
-  baseUrl: process.env.LAMBDADB_BASE_URL!,
-  projectName: process.env.LAMBDADB_PROJECT_NAME!,
-  collectionName: "my-documents",
-  vectorDimensions: 1536,
-  defaultConsistentRead: false,
-});
+    collection: client.collection('my-collection'),
+    defaultConsistentRead: true,
+    });
 ```
 
 ## Usage for retrieval-augmented generation
 
 ```typescript
-import { LambdaDBVectorStore } from "langchain-lambdadb";
+import { LambdaDBClient } from "@functional-systems/lambdadb";
+import { LambdaDBVectorStore } from "@functional-systems/langchain-lambdadb";
 import { OpenAIEmbeddings, ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { StringOutputParser } from "@langchain/core/output_parsers";
@@ -262,11 +243,14 @@ import { RunnablePassthrough, RunnableSequence } from "@langchain/core/runnables
 
 const embeddings = new OpenAIEmbeddings();
 
-const vectorStore = new LambdaDBVectorStore(embeddings, {
+const client = new LambdaDBClient({
+  projectApiKey: process.env.LAMBDADB_PROJECT_API_KEY!,
   baseUrl: process.env.LAMBDADB_BASE_URL!,
   projectName: process.env.LAMBDADB_PROJECT_NAME!,
-  collectionName: "my-documents",
-  vectorDimensions: 1536,
+});
+
+const vectorStore = new LambdaDBVectorStore(embeddings, {
+  collection: client.collection('my-collection'),
 });
 
 const retriever = vectorStore.asRetriever({ searchKwargs: { k: 3 } });
@@ -289,7 +273,7 @@ console.log(response);
 
 ## API reference
 
-For detailed documentation of all `LambdaDBVectorStore` features and configurations, head to the [API reference](https://docs.lambdadb.ai/reference/api/introduction).
+For detailed documentation of all `LambdaDBVectorStore` features and configurations, head to the [API reference](https://www.npmjs.com/package/@functional-systems/langchain-lambdadb).
 
 ## Additional resources
 
