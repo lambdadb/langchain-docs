@@ -106,41 +106,8 @@ Use multiple stream modes (`"messages"` and `"updates"`) with `subgraphs=True` (
 - Detect when the graph encounters an interrupt
 - Handle user input and resume execution seamlessly
 
-```python
-async for metadata, mode, chunk in graph.astream(
-    initial_input,
-    stream_mode=["messages", "updates"],
-    subgraphs=True,
-    config=config
-):
-    if mode == "messages":
-        # Handle streaming message content
-        msg, _ = chunk
-        if isinstance(msg, AIMessageChunk) and msg.content:
-            # Display content in real-time
-            display_streaming_content(msg.content)
 
-    elif mode == "updates":
-        # Check for interrupts
-        if "__interrupt__" in chunk:
-            # Stop streaming display
-            interrupt_info = chunk["__interrupt__"][0].value
 
-            # Handle user input
-            user_response = get_user_input(interrupt_info)
-
-            # Resume graph with updated input
-            initial_input = Command(resume=user_response)
-            break
-
-        else:
-            # Track node transitions
-            current_node = list(chunk.keys())[0]
-```
-
-- **`stream_mode=["messages", "updates"]`**: Enables dual streaming of both message chunks and graph state updates
-- **`subgraphs=True`**: Required for interrupt detection in nested graphs
-- **`"__interrupt__"` detection**: Signals when human input is needed
 - **`Command(resume=...)`**: Resumes graph execution with user-provided data
 
 ### Handling multiple interrupts
@@ -252,10 +219,9 @@ const approvalNode: typeof State.Node = (state) => {
 ```
 
 
+
+
 When you resume the graph, pass `true` to approve or `false` to reject:
-
-
-
 ```typescript
 // To approve
 await graph.invoke(new Command({ resume: true }), config);

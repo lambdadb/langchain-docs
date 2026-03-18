@@ -8,7 +8,7 @@ When working with LangSmith traces, you may need to prevent sensitive informatio
 - [Completely hide inputs and outputs](#hide-inputs-and-outputs) using environment variables or [Client](https://reference.langchain.com/python/langsmith/client/Client) configuration.
 - [Hide metadata](#hide-metadata) to remove or transform run metadata.
 - [Apply rule-based masking](#rule-based-masking-of-inputs-and-outputs) with regex patterns or anonymization libraries to selectively redact sensitive information.
-- [Process inputs and outputs for individual functions](#processing-inputs-&-outputs-for-a-single-function) with function-level customization.
+- [Process inputs and outputs for individual functions](#processing-inputs-and-outputs-for-a-single-function) with function-level customization.
 - [Use third-party anonymizers](#examples) like Microsoft Presidio and Amazon Comprehend for advanced PII detection.
 
 <Note>
@@ -472,7 +472,7 @@ def recursive_anonymize(data, depth=10):
 
 openai_client = wrap_openai(openai.Client())
 
-# Initialize the LangSmith [Client](https://reference.langchain.com/python/langsmith/client/Client) with the anonymization functions
+# Initialize the LangSmith @[Client] with the anonymization functions
 langsmith_client = Client(
     hide_inputs=recursive_anonymize, hide_outputs=recursive_anonymize
 )
@@ -582,7 +582,7 @@ def presidio_anonymize(data):
 
 openai_client = wrap_openai(openai.Client())
 
-# initialize the langsmith [Client](https://reference.langchain.com/python/langsmith/client/Client) with the anonymization functions
+# initialize the langsmith @[Client] with the anonymization functions
 langsmith_client = Client(
   hide_inputs=presidio_anonymize, hide_outputs=presidio_anonymize
 )
@@ -643,7 +643,7 @@ uv add openai
 ```
 </CodeGroup>
 
-You will need to set up credentials in AWS and authenticate using the AWS CLI. Follow the instructions [here](https://docs.aws.amazon.com/comprehend/latest/dg/setting-up.html).
+You will need to set up credentials in AWS and authenticate using the AWS CLI. Follow the [AWS Comprehend setup instructions](https://docs.aws.amazon.com/comprehend/latest/dg/setting-up.html).
 
 ```python
 import openai
@@ -724,7 +724,7 @@ def comprehend_anonymize(data):
 
 openai_client = wrap_openai(openai.Client())
 
-# initialize the langsmith [Client](https://reference.langchain.com/python/langsmith/client/Client) with the anonymization functions
+# initialize the langsmith @[Client] with the anonymization functions
 langsmith_client = Client(
   hide_inputs=comprehend_anonymize, hide_outputs=comprehend_anonymize
 )

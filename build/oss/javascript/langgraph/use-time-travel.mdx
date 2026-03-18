@@ -19,7 +19,7 @@ Invoke the graph with a prior checkpoint's config to replay from that point.
 
 <Warning>
 
-Replay re-executes nodes — it doesn't just read from cache. LLM calls, API requests, and [interrupts](/oss/javascript/langgraph/interrupts) fire again and may return different results. Replaying from the final checkpoint (no `next` nodes) is a no-op.
+Replay re-executes nodes—it doesn't just read from cache. LLM calls, API requests, and [interrupts](/oss/javascript/langgraph/interrupts) fire again and may return different results. Replaying from the final checkpoint (no `next` nodes) is a no-op.
 
 </Warning>
 
@@ -250,7 +250,7 @@ const result = await graph.invoke(null, forkConfig);
 
 Set `checkpointer=True` on the subgraph to give it its own checkpoint history. This creates checkpoints at each step **within** the subgraph, allowing you to time travel from a specific point inside it — for example, between two interrupts.
 
-Use @[`get_state`] with `subgraphs=True` to access the subgraph's own checkpoint config, then fork from it:
+Use [`get_state`](https://reference.langchain.com/javascript/classes/_langchain_langgraph.pregel.Pregel.html#getState) with `subgraphs=True` to access the subgraph's own checkpoint config, then fork from it:
 
 
 
