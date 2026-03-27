@@ -43,6 +43,7 @@ const searchDatabase = tool(
 ```
 
 
+
 <Note>
     **Server-side tool use:** Some chat models feature built-in tools (web search, code interpreters) that are executed server-side. See [Server-side tool use](#server-side-tool-use) for details.
 </Note>
@@ -102,6 +103,7 @@ const result = await agent.invoke(
   }
 );
 ```
+
 
 
 ### Long-term memory (Store)
@@ -186,6 +188,7 @@ console.log(result);
 ```
 
 
+
 ### Stream writer
 
 Stream real-time updates from tools during execution. This is useful for providing progress feedback to users during long-running operations.
@@ -219,6 +222,7 @@ const getWeather = tool(
   }
 );
 ```
+
 
 
 ## ToolNode
@@ -259,6 +263,7 @@ const calculator = tool(
 // Create the ToolNode with your tools
 const toolNode = new ToolNode([search, calculator]);
 ```
+
 
 
 ### Tool return values
@@ -347,6 +352,7 @@ const toolNode = new ToolNode(tools, {
 ```
 
 
+
 ### Route with tools_condition
 
 Use [`tools_condition`](https://reference.langchain.com/javascript/langchain-langgraph/prebuilt/toolsCondition) for conditional routing based on whether the LLM made tool calls:
@@ -366,6 +372,7 @@ const builder = new StateGraph(MessagesAnnotation)
 
 const graph = builder.compile();
 ```
+
 
 
 ### State injection
