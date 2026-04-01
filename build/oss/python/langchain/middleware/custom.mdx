@@ -21,12 +21,26 @@ Middleware provides two styles of hooks to intercept agent execution:
 
 Run sequentially at specific execution points. Use for logging, validation, and state updates.
 
-**Available hooks:**
+Choose the hooks your middleware needs. You can choose between node-style hooks and wrap-style hooks.
 
-- `before_agent` - Before agent starts (once per invocation)
-- `before_model` - Before each model call
-- `after_model` - After each model response
-- `after_agent` - After agent completes (once per invocation)
+**Node-style hooks** run at specific execution points:
+
+| Hook | When it runs |
+|------|-------------|
+| `before_agent` | Before agent starts (once per invocation) |
+| `before_model` | Before each model call |
+| `after_model` | After each model response |
+| `after_agent` | After agent completes (once per invocation) |
+
+
+
+
+**Wrap-style hooks** run around each call, giving you control over execution:
+
+| Hook | When it runs |
+|------|-------------|
+| `wrap_model_call` | Around each model call |
+| `wrap_tool_call` | Around each tool call |
 
 
 
@@ -419,6 +433,20 @@ class LoggingMiddleware(AgentMiddleware):
         print(f"Model returned: {state['messages'][-1].content}")
         return None
 
+    async def abefore_model(
+        self, state: AgentState, runtime: Runtime
+    ) -> dict[str, Any] | None:
+        # Async version of before_model
+        return None
+
+    async def aafter_model(
+        self, state: AgentState, runtime: Runtime
+    ) -> dict[str, Any] | None:
+        # Async version of after_model
+        print(f"Model returned: {state['messages'][-1].content}")
+        return None
+
+
 agent = create_agent(
     model="gpt-4.1",
     middleware=[LoggingMiddleware()],
@@ -438,7 +466,7 @@ agent = create_agent(
 
 ## Custom state schema
 
-Middleware can extend the agent's state with custom properties. This enables middleware to:
+If your middleware needs to track state across hooks, middleware can extend the agent's state with custom properties. This enables middleware to:
 
 - **Track state across execution**: Maintain counters, flags, or other values that persist throughout the agent's execution lifecycle
 - **Share data between hooks**: Pass information from `before_model` to `after_model` or between different middleware instances
